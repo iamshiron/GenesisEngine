@@ -15,6 +15,7 @@ project "Runtime.Client"
         includeDirs["Genesis"],
         includeDirs["spdlog"],
         includeDirs["fmt"],
+        includeDirs["glfw"],
     }
 
     links {
@@ -24,4 +25,5 @@ project "Runtime.Client"
         "Genesis.Client",
         "Dependencies.spdlog",
         "Dependencies.fmt",
+        "Dependencies.glfw",
     }

@@ -6,7 +6,8 @@
                 "${workspaceFolder}/Runtime/src/**",
                 "${workspaceFolder}/Genesis/src/**",
                 "${workspaceFolder}/Dependencies/spdlog/include/**",
-                "${workspaceFolder}/Dependencies/fmt/include/**"
+                "${workspaceFolder}/Dependencies/fmt/include/**",
+                "${workspaceFolder}/Dependencies/glfw/include/**"
             ],
             "defines": ["_DEBUG", "UNICODE", "_UNICODE"],
             "windowsSdkVersion": "10.0.22621.0",
