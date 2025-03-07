@@ -1,21 +1,11 @@
-#include <GenesisClient/Client.hpp>
-#include <GenesisCore/Logger.hpp>
-#include <GenesisServer/Server.hpp>
-#include <RuntimeCore/Core.hpp>
-#include <iostream>
-#include <spdlog/spdlog.h>
+#include <GenesisClient/EntryPoint.hpp>
+#include <GenesisCore/Application.hpp>
+#include <GenesisCore/Logger.cpp>
 
-int main(int argc, char** argv) {
-	ge::core::Logger::init();
+class RuntimeClient: public ge::Application {
+public:
+	RuntimeClient() { GE_Info("RuntimeClient init"); }
+	virtual ~RuntimeClient() { GE_Info("RuntimeClient release"); }
+};
 
-	ge::Client::init();
-	ge::Server::init();
-	rt::Core::init();
-
-	GE_Info("Info Log");
-	GE_Warn("Warn Log");
-	GE_Error("Error Log");
-	GE_Fatal("Fatal Log");
-
-	std::cin.get();
-}
+ge::Application* ge::createApplication() { return new RuntimeClient(); }

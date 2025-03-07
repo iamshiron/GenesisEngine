@@ -4,18 +4,16 @@
 #include <spdlog/spdlog.h>
 
 namespace ge {
-	namespace core {
-		class Logger {
-		public:
-			static void init();
-			static void release();
+	class Logger {
+	public:
+		static void init();
+		static void release();
 
-			inline static Ref<spdlog::logger> getLogger() { return handle; }
+		inline static Ref<spdlog::logger> getLogger() { return handle; }
 
-		private:
-			static Ref<spdlog::logger> handle;
-		};
-	}
+	private:
+		static Ref<spdlog::logger> handle;
+	};
 }
 
 #ifndef GE_CONFIG_DIST
