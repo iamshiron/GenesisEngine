@@ -3,12 +3,12 @@
 #include <GenesisCore/Application.hpp>
 #include <GenesisCore/Logger.hpp>
 
-extern ge::Application* ge::createApplication();
+extern ge::ClientApplication* ge::createApplication();
 
 int main(int argc, char** argv) {
 	ge::Logger::init();
 
-	ge::Application* app = ge::createApplication();
+	ge::ClientApplication* app = ge::createApplication();
 	app->run();
 	delete app;
 }

@@ -73,3 +73,6 @@ template<typename T, typename... Args>
 constexpr Ref<T> createRef(Args&&... args) {
 	return std::make_shared<T>(std::forward<Args>(args)...);
 }
+
+// Bind an event function
+#define GE_BindEventFunction(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }

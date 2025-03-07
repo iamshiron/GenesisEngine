@@ -9,6 +9,4 @@ namespace ge {
 
 		void run();
 	};
-
-	Application* createApplication();
 }

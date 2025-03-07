@@ -1,11 +1,11 @@
 #include "Application.hpp"
 
-#include "Logger.hpp"
+#include "GenesisCore/Logger.hpp"
 
 namespace ge {
 	Application::Application() {}
 
 	Application::~Application() {}
 
-	void Application::run() {}
+	void Application::run() { GE_Info("Application run"); }
 }
