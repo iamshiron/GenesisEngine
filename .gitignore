@@ -1,0 +1,9 @@
+# Binaries
+bin/
+bin-int/
+
+# MSBuild
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.sln
