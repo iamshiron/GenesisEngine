@@ -1,9 +1,3 @@
-#include <GenesisCore/Core.hpp>
-#include <GenesisServer/Server.hpp>
-#include <RuntimeCore/Core.hpp>
+#include <iostream>
 
-int main(int argc, char** argv) {
-	ge::Core::init();
-	ge::Server::init();
-	rt::Core::init();
-}
+int main(int argc, char** argv) { std::cout << "Runtime Server" << std::endl; }

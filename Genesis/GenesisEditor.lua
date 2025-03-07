@@ -13,6 +13,8 @@ project "Genesis.Editor"
     includedirs {
         includeDirs["Genesis"],
         includeDirs["Runtime"],
+        includeDirs["spdlog"],
+        includeDirs["fmt"]
     }
 
     links {

@@ -12,4 +12,6 @@ project "Genesis.Server"
 
     includedirs {
         includeDirs["Genesis"],
+        includeDirs["spdlog"],
+        includeDirs["fmt"]
     }
