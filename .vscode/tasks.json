@@ -1,0 +1,204 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		// ========================================================================
+		// Build Tasks
+		// ========================================================================
+		{
+			"label": "CMake: Configure",
+			"type": "shell",
+			"command": "cmake",
+			"args": ["-S", ".", "-B", "build"],
+			"group": "build",
+			"problemMatcher": []
+		},
+		{
+			"label": "Build: Debug",
+			"type": "shell",
+			"command": "cmake",
+			"args": ["--build", "build", "--config", "Debug"],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": "$msCompile",
+			"dependsOn": ["CMake: Configure"]
+		},
+		{
+			"label": "Build: Release",
+			"type": "shell",
+			"command": "cmake",
+			"args": ["--build", "build", "--config", "Release"],
+			"group": "build",
+			"problemMatcher": "$msCompile",
+			"dependsOn": ["CMake: Configure"]
+		},
+		{
+			"label": "Build: Dist",
+			"type": "shell",
+			"command": "cmake",
+			"args": ["--build", "build", "--config", "Dist"],
+			"group": "build",
+			"problemMatcher": "$msCompile",
+			"dependsOn": ["CMake: Configure"]
+		},
+		{
+			"label": "Build: All Configurations",
+			"dependsOn": ["Build: Debug", "Build: Release", "Build: Dist"],
+			"group": "build",
+			"problemMatcher": []
+		},
+		{
+			"label": "Clean Build",
+			"type": "shell",
+			"command": "Remove-Item",
+			"args": [
+				"-Recurse",
+				"-Force",
+				"build,bin,bin-int",
+				"-ErrorAction",
+				"SilentlyContinue"
+			],
+			"group": "build",
+			"problemMatcher": []
+		},
+		// ========================================================================
+		// Run Tasks - RuntimeClient
+		// ========================================================================
+		{
+			"label": "Run: RuntimeClient (Debug)",
+			"type": "shell",
+			"command": "${workspaceFolder}/bin/Windows/Debug-x64/RuntimeClient/RuntimeClient.exe",
+			"group": "test",
+			"problemMatcher": [],
+			"dependsOn": ["Build: Debug"],
+			"presentation": {
+				"reveal": "always",
+				"panel": "new"
+			}
+		},
+		{
+			"label": "Run: RuntimeClient (Release)",
+			"type": "shell",
+			"command": "${workspaceFolder}/bin/Windows/Release-x64/RuntimeClient/RuntimeClient.exe",
+			"group": "test",
+			"problemMatcher": [],
+			"dependsOn": ["Build: Release"],
+			"presentation": {
+				"reveal": "always",
+				"panel": "new"
+			}
+		},
+		{
+			"label": "Run: RuntimeClient (Dist)",
+			"type": "shell",
+			"command": "${workspaceFolder}/bin/Windows/Dist-x64/RuntimeClient/RuntimeClient.exe",
+			"group": "test",
+			"problemMatcher": [],
+			"dependsOn": ["Build: Dist"],
+			"presentation": {
+				"reveal": "always",
+				"panel": "new"
+			}
+		},
+		// ========================================================================
+		// Run Tasks - RuntimeServer
+		// ========================================================================
+		{
+			"label": "Run: RuntimeServer (Debug)",
+			"type": "shell",
+			"command": "${workspaceFolder}/bin/Windows/Debug-x64/RuntimeServer/RuntimeServer.exe",
+			"group": "test",
+			"problemMatcher": [],
+			"dependsOn": ["Build: Debug"],
+			"presentation": {
+				"reveal": "always",
+				"panel": "new"
+			}
+		},
+		{
+			"label": "Run: RuntimeServer (Release)",
+			"type": "shell",
+			"command": "${workspaceFolder}/bin/Windows/Release-x64/RuntimeServer/RuntimeServer.exe",
+			"group": "test",
+			"problemMatcher": [],
+			"dependsOn": ["Build: Release"],
+			"presentation": {
+				"reveal": "always",
+				"panel": "new"
+			}
+		},
+		{
+			"label": "Run: RuntimeServer (Dist)",
+			"type": "shell",
+			"command": "${workspaceFolder}/bin/Windows/Dist-x64/RuntimeServer/RuntimeServer.exe",
+			"group": "test",
+			"problemMatcher": [],
+			"dependsOn": ["Build: Dist"],
+			"presentation": {
+				"reveal": "always",
+				"panel": "new"
+			}
+		},
+		// ========================================================================
+		// Run Tasks - GenesisEditor
+		// ========================================================================
+		{
+			"label": "Run: GenesisEditor (Debug)",
+			"type": "shell",
+			"command": "${workspaceFolder}/bin/Windows/Debug-x64/GenesisEditor/GenesisEditor.exe",
+			"group": "test",
+			"problemMatcher": [],
+			"dependsOn": ["Build: Debug"],
+			"presentation": {
+				"reveal": "always",
+				"panel": "new"
+			}
+		},
+		{
+			"label": "Run: GenesisEditor (Release)",
+			"type": "shell",
+			"command": "${workspaceFolder}/bin/Windows/Release-x64/GenesisEditor/GenesisEditor.exe",
+			"group": {
+				"kind": "test",
+				"isDefault": true
+			},
+			"problemMatcher": [],
+			"dependsOn": ["Build: Release"],
+			"presentation": {
+				"reveal": "always",
+				"panel": "new"
+			}
+		},
+		{
+			"label": "Run: GenesisEditor (Dist)",
+			"type": "shell",
+			"command": "${workspaceFolder}/bin/Windows/Dist-x64/GenesisEditor/GenesisEditor.exe",
+			"group": "test",
+			"problemMatcher": [],
+			"dependsOn": ["Build: Dist"],
+			"presentation": {
+				"reveal": "always",
+				"panel": "new"
+			}
+		},
+		// ========================================================================
+		// Client/Server Testing
+		// ========================================================================
+		{
+			"label": "Run: Client & Server (Debug)",
+			"dependsOn": ["Run: RuntimeServer (Debug)", "Run: RuntimeClient (Debug)"],
+			"group": "test",
+			"problemMatcher": []
+		},
+		{
+			"label": "Run: Client & Server (Release)",
+			"dependsOn": [
+				"Run: RuntimeServer (Release)",
+				"Run: RuntimeClient (Release)"
+			],
+			"group": "test",
+			"problemMatcher": []
+		}
+	]
+}

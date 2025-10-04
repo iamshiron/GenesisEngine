@@ -1,0 +1,86 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		// ========================================================================
+		// RuntimeClient Debug Configurations
+		// ========================================================================
+		{
+			"name": "(Win) Run Client - Debug",
+			"type": "cppvsdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}/bin/Windows/Debug-x64/RuntimeClient/RuntimeClient.exe",
+			"args": [],
+			"stopAtEntry": false,
+			"cwd": "${workspaceFolder}",
+			"environment": [],
+			"console": "integratedTerminal",
+			"preLaunchTask": "Build: Debug"
+		},
+		{
+			"name": "(Win) Run Client - Release",
+			"type": "cppvsdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}/bin/Windows/Release-x64/RuntimeClient/RuntimeClient.exe",
+			"args": [],
+			"stopAtEntry": false,
+			"cwd": "${workspaceFolder}",
+			"environment": [],
+			"console": "integratedTerminal",
+			"preLaunchTask": "Build: Release"
+		},
+		// ========================================================================
+		// RuntimeServer Debug Configurations
+		// ========================================================================
+		{
+			"name": "(Win) Run Server - Debug",
+			"type": "cppvsdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}/bin/Windows/Debug-x64/RuntimeServer/RuntimeServer.exe",
+			"args": [],
+			"stopAtEntry": false,
+			"cwd": "${workspaceFolder}",
+			"environment": [],
+			"console": "integratedTerminal",
+			"preLaunchTask": "Build: Debug"
+		},
+		{
+			"name": "(Win) Run Server - Release",
+			"type": "cppvsdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}/bin/Windows/Release-x64/RuntimeServer/RuntimeServer.exe",
+			"args": [],
+			"stopAtEntry": false,
+			"cwd": "${workspaceFolder}",
+			"environment": [],
+			"console": "integratedTerminal",
+			"preLaunchTask": "Build: Release"
+		},
+		// ========================================================================
+		// GenesisEditor Debug Configurations
+		// ========================================================================
+		{
+			"name": "(Win) Run Editor - Debug",
+			"type": "cppvsdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}/bin/Windows/Debug-x64/GenesisEditor/GenesisEditor.exe",
+			"args": [],
+			"stopAtEntry": false,
+			"cwd": "${workspaceFolder}",
+			"environment": [],
+			"console": "integratedTerminal",
+			"preLaunchTask": "Build: Debug"
+		},
+		{
+			"name": "(Win) Run Editor - Release",
+			"type": "cppvsdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}/bin/Windows/Release-x64/GenesisEditor/GenesisEditor.exe",
+			"args": [],
+			"stopAtEntry": false,
+			"cwd": "${workspaceFolder}",
+			"environment": [],
+			"console": "integratedTerminal",
+			"preLaunchTask": "Build: Release"
+		}
+	]
+}
