@@ -1,0 +1,183 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  # Windows client and editor builds
+  windows-client-editor:
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        config: [Debug, Release]
+        target: [RuntimeClient, GenesisEditor]
+      fail-fast: false
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Setup CMake
+      uses: lukka/get-cmake@latest
+
+    - name: Setup MSVC
+      uses: ilammy/msvc-dev-cmd@v1
+
+    - name: Cache CMake build
+      uses: actions/cache@v4
+      with:
+        path: |
+          build
+          3rd-party/fmt/build
+          3rd-party/spdlog/build
+        key: windows-client-editor-${{ matrix.target }}-${{ matrix.config }}-${{ hashFiles('**/CMakeLists.txt') }}
+        restore-keys: |
+          windows-client-editor-${{ matrix.target }}-${{ matrix.config }}-
+          windows-client-editor-${{ matrix.config }}-
+          windows-
+
+    - name: Configure CMake
+      run: cmake -S . -B build -G "Visual Studio 17 2022" -A x64
+
+    - name: Build ${{ matrix.target }}
+      run: cmake --build build --config ${{ matrix.config }} --target ${{ matrix.target }}
+
+    - name: Upload artifacts
+      if: matrix.config == 'Release'
+      uses: actions/upload-artifact@v4
+      with:
+        name: Windows-${{ matrix.target }}-${{ matrix.config }}
+        path: bin/Windows/${{ matrix.config }}-x64/${{ matrix.target }}/
+        retention-days: 7
+
+  # Windows server build
+  windows-server:
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        config: [Debug, Release]
+      fail-fast: false
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Setup CMake
+      uses: lukka/get-cmake@latest
+
+    - name: Setup MSVC
+      uses: ilammy/msvc-dev-cmd@v1
+
+    - name: Cache CMake build
+      uses: actions/cache@v4
+      with:
+        path: |
+          build
+          3rd-party/fmt/build
+          3rd-party/spdlog/build
+        key: windows-server-${{ matrix.config }}-${{ hashFiles('**/CMakeLists.txt') }}
+        restore-keys: |
+          windows-server-${{ matrix.config }}-
+          windows-
+
+    - name: Configure CMake
+      run: cmake -S . -B build -G "Visual Studio 17 2022" -A x64
+
+    - name: Build RuntimeServer
+      run: cmake --build build --config ${{ matrix.config }} --target RuntimeServer
+
+    - name: Upload artifacts
+      if: matrix.config == 'Release'
+      uses: actions/upload-artifact@v4
+      with:
+        name: Windows-RuntimeServer-${{ matrix.config }}
+        path: bin/Windows/${{ matrix.config }}-x64/RuntimeServer/
+        retention-days: 7
+
+  # Linux server build
+  linux-server:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        config: [Debug, Release]
+        compiler:
+          - { cc: gcc, cxx: g++, name: gcc, packages: "gcc g++" }
+          - { cc: clang, cxx: clang++, name: clang, packages: "clang" }
+      fail-fast: false
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Setup CMake
+      uses: lukka/get-cmake@latest
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential ninja-build ${{ matrix.compiler.packages }}
+
+    - name: Cache CMake build
+      uses: actions/cache@v4
+      with:
+        path: |
+          build
+          3rd-party/fmt/build
+          3rd-party/spdlog/build
+        key: linux-${{ matrix.compiler.name }}-${{ matrix.config }}-${{ hashFiles('**/CMakeLists.txt') }}
+        restore-keys: |
+          linux-${{ matrix.compiler.name }}-${{ matrix.config }}-
+          linux-${{ matrix.compiler.name }}-
+          linux-
+
+    - name: Configure CMake
+      env:
+        CC: ${{ matrix.compiler.cc }}
+        CXX: ${{ matrix.compiler.cxx }}
+      run: cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=${{ matrix.config }}
+
+    - name: Build RuntimeServer
+      run: cmake --build build --config ${{ matrix.config }} --target RuntimeServer
+
+    - name: Upload artifacts
+      if: matrix.config == 'Release' && matrix.compiler.name == 'gcc'
+      uses: actions/upload-artifact@v4
+      with:
+        name: Linux-RuntimeServer-${{ matrix.config }}
+        path: bin/Linux/${{ matrix.config }}-x64/RuntimeServer/
+        retention-days: 7
+
+  # Summary job
+  build-summary:
+    needs: [windows-client-editor, windows-server, linux-server]
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+    - name: Check build results
+      run: |
+        echo "## Build Summary" >> $GITHUB_STEP_SUMMARY
+        echo "- Windows Client & Editor: ${{ needs.windows-client-editor.result }}" >> $GITHUB_STEP_SUMMARY
+        echo "- Windows Server: ${{ needs.windows-server.result }}" >> $GITHUB_STEP_SUMMARY
+        echo "- Linux Server: ${{ needs.linux-server.result }}" >> $GITHUB_STEP_SUMMARY
+
+        if [ "${{ needs.windows-client-editor.result }}" != "success" ] || \
+           [ "${{ needs.windows-server.result }}" != "success" ] || \
+           [ "${{ needs.linux-server.result }}" != "success" ]; then
+          echo "❌ One or more builds failed" >> $GITHUB_STEP_SUMMARY
+          exit 1
+        else
+          echo "✅ All builds succeeded" >> $GITHUB_STEP_SUMMARY
+        fi
