@@ -1,11 +1,13 @@
-#include "GenesisCore/Core.h"
-#include "GenesisClient/Client.h"
+#include <GenesisCore/Logger.hpp>
+#include <GenesisClient/Client.hpp>
 
 int main() {
-    ge::Log("RuntimeClient started");
+    ge::Logger::init();
+
+    GE_Info("Starting Genesis Client...");
 
     ge::Client client;
-    client.ConnectToServer("127.0.0.1");
+    client.connectToServer("127.0.0.1");
 
     return 0;
 }

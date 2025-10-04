@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.15)
 project(GenesisEngine CXX)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # ====================================================================================
@@ -73,9 +73,9 @@ function(ge_add_library TARGET_NAME)
     set(multiValueArgs SOURCES DEPENDENCIES)
     cmake_parse_arguments(ARG "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
-    # Automatically find all .h and .cpp files if no sources specified
+    # Automatically find all .h, .hpp, and .cpp files if no sources specified
     if(NOT ARG_SOURCES)
-        file(GLOB ARG_SOURCES "*.h" "*.cpp")
+        file(GLOB ARG_SOURCES "*.h" "*.hpp" "*.cpp")
     endif()
 
     add_library(${TARGET_NAME} STATIC ${ARG_SOURCES})
@@ -123,6 +123,19 @@ function(ge_add_executable TARGET_NAME)
         )
     endforeach()
 endfunction()
+
+# ====================================================================================
+# Third-Party Libraries
+# ====================================================================================
+# Configure fmt to build as static library
+set(FMT_INSTALL OFF CACHE BOOL "" FORCE)
+add_subdirectory(3rd-party/fmt)
+
+# Configure spdlog to build as static library and use external fmt
+set(SPDLOG_FMT_EXTERNAL ON CACHE BOOL "" FORCE)
+set(SPDLOG_BUILD_SHARED OFF CACHE BOOL "" FORCE)
+set(SPDLOG_INSTALL OFF CACHE BOOL "" FORCE)
+add_subdirectory(3rd-party/spdlog)
 
 # ====================================================================================
 # Subdirectories

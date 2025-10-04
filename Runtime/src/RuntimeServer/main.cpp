@@ -1,8 +1,9 @@
-#include "GenesisCore/Core.h"
-#include "GenesisServer/Server.h"
+#include <GenesisCore/Logger.hpp>
+
+#include <GenesisServer/Server.hpp>
 
 int main() {
-    ge::Log("RuntimeServer started");
+    GE_Info("RuntimeServer started");
 
     ge::Server server;
     server.Start();

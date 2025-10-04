@@ -1,2 +1,6 @@
 # GenesisCore - Core engine functionality
-ge_add_library(GenesisCore)
+ge_add_library(GenesisCore
+    DEPENDENCIES
+        spdlog::spdlog
+        fmt::fmt
+)

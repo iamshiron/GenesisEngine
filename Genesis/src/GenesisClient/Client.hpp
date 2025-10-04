@@ -7,6 +7,6 @@ namespace ge {
     public:
         Client();
         ~Client();
-        void ConnectToServer(const std::string& serverIp);
+        void connectToServer(const std::string& serverIp);
     };
 }

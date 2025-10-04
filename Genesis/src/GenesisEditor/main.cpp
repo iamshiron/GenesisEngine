@@ -1,14 +1,9 @@
-#include "GenesisCore/Core.h"
+#include <GenesisCore/Logger.hpp>
 #include <iostream>
 
 int main() {
-    ge::Log("--- GENESIS EDITOR ---");
-    ge::LogPlatformInfo();
-    ge::Log("Editor initialized successfully.");
-    ge::Log("(Editor UI and features would go here)");
-
-    std::cout << "\nPress Enter to exit...";
-    std::cin.get();
+    GE_Info("--- GENESIS EDITOR ---");
+    GE_Info("Editor initialized successfully.");
 
     return 0;
 }

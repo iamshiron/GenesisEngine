@@ -1,17 +1,19 @@
-#include "GenesisClient/Client.h"
-#include "GenesisCore/Core.h"
+#include "Client.hpp"
+
+#include <GenesisCore/Logger.hpp>
+#include "Defines.hpp"
 
 namespace ge {
     Client::Client() {
-        Log("Genesis Client Initialized.");
+        GE_Info("Genesis Client Initialized.");
     }
 
     Client::~Client() {
-        Log("Genesis Client Shutdown.");
+        GE_Info("Genesis Client Shutdown.");
     }
 
-    void Client::ConnectToServer(const std::string& serverIp) {
-        Log("Attempting to connect to server at: " + serverIp);
-        Log("Connection successful! (simulated)");
+    void Client::connectToServer(const std::string& serverIp) {
+        GE_Info("Attempting to connect to server at: " + serverIp);
+        GE_Info("Connection successful! (simulated)");
     }
 }

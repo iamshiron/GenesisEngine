@@ -1,17 +1,17 @@
-#include "GenesisServer/Server.h"
-#include "GenesisCore/Core.h"
+#include "Server.hpp"
+
+#include <GenesisCore/Logger.hpp>
 
 namespace ge {
     Server::Server() {
-        Log("Genesis Server Initialized.");
+        GE_Info("Genesis Server Initialized.");
     }
 
     Server::~Server() {
-        Log("Genesis Server Shutdown.");
+        GE_Info("Genesis Server Shutdown.");
     }
 
     void Server::Start() {
-        Log("Server is now listening for connections...");
-        Log("(In a real implementation, this would enter a network loop)");
+        GE_Info("Server is now listening for connections...");
     }
 }
