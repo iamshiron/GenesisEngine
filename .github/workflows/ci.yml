@@ -110,9 +110,6 @@ jobs:
     strategy:
       matrix:
         config: [Debug, Release]
-        compiler:
-          - { cc: gcc, cxx: g++, name: gcc, packages: "gcc g++" }
-          - { cc: clang, cxx: clang++, name: clang, packages: "clang" }
       fail-fast: false
 
     steps:
@@ -127,7 +124,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential ninja-build ${{ matrix.compiler.packages }}
+        sudo apt-get install -y build-essential ninja-build clang
 
     - name: Cache CMake build
       uses: actions/cache@v4
@@ -136,23 +133,23 @@ jobs:
           build
           3rd-party/fmt/build
           3rd-party/spdlog/build
-        key: linux-${{ matrix.compiler.name }}-${{ matrix.config }}-${{ hashFiles('**/CMakeLists.txt') }}
+        key: linux-clang-${{ matrix.config }}-${{ hashFiles('**/CMakeLists.txt') }}
         restore-keys: |
-          linux-${{ matrix.compiler.name }}-${{ matrix.config }}-
-          linux-${{ matrix.compiler.name }}-
+          linux-clang-${{ matrix.config }}-
+          linux-clang-
           linux-
 
     - name: Configure CMake
       env:
-        CC: ${{ matrix.compiler.cc }}
-        CXX: ${{ matrix.compiler.cxx }}
+        CC: clang
+        CXX: clang++
       run: cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=${{ matrix.config }}
 
     - name: Build RuntimeServer
       run: cmake --build build --config ${{ matrix.config }} --target RuntimeServer
 
     - name: Upload artifacts
-      if: matrix.config == 'Release' && matrix.compiler.name == 'gcc'
+      if: matrix.config == 'Release'
       uses: actions/upload-artifact@v4
       with:
         name: Linux-RuntimeServer-${{ matrix.config }}
